@@ -5,6 +5,5 @@ class Vehicle:
         self.battery_percentage = battery_percentage
         
         
-v = Vehicle("BH-321","Tesla-X",80)
-print(v.vehicle_id,v.model,v.battery_percentage)
+
         
