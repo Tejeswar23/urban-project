@@ -1,8 +1,42 @@
-class UrbanMobility:
-    def __init__(self):
-        pass
-    def greet(self):
-        print("Welcome to Eco-Ride Urban Mobility System")
+class Vehicle:
+    def __init__(self, vehicle_id, model, battery_percentage):
+        self.vehicle_id = vehicle_id
+        self.model = model
+        self.__battery_percentage = battery_percentage
+        self.__maintenance_status = "good"
+        self.__rental_price = 0
+
+    @property
+    def battery_percentage(self):
+        return self.__battery_percentage
+
+    @battery_percentage.setter
+    def battery_percentage(self, value):
+        if 0 < value <= 100:
+            self.__battery_percentage = value
+        else:
+            raise ValueError("Battery percentage must be between 0 and 100")
+
+    @property
+    def maintenance_status(self):
+        return self.__maintenance_status
+
+    @maintenance_status.setter
+    def maintenance_status(self, value):
+        self.__maintenance_status = value
+
+    @property
+    def rental_price(self):
+        return self.__rental_price
+
+    @rental_price.setter
+    def rental_price(self, value):
+        if value >= 0:
+            self.__rental_price = value
+        else:
+            raise ValueError("Rental price cannot be negative")
         
-um = UrbanMobility()
-um.greet()
+        
+v = Vehicle("BX01","Tesla",80)
+v.battery_percentage = 90
+print(v.battery_percentage)
