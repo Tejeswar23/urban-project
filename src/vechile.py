@@ -37,6 +37,3 @@ class Vehicle:
             raise ValueError("Rental price cannot be negative")
         
         
-v = Vehicle("BX01","Tesla",80)
-v.battery_percentage = 90
-print(v.battery_percentage)
