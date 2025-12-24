@@ -1,8 +1,10 @@
-class UrbanMobility:
-    def __init__(self):
-        pass
-    def greet(self):
-        print("Welcome to Eco-Ride Urban Mobility System")
+class Vehicle:
+    def __init__(self,vehicle_id,model,battery_percentage):
+        self.vehicle_id = vehicle_id
+        self.model = model
+        self.battery_percentage = battery_percentage
         
-um = UrbanMobility()
-um.greet()
+        
+v = Vehicle("BH-321","Tesla-X",80)
+print(v.vehicle_id,v.model,v.battery_percentage)
+        
