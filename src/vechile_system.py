@@ -47,3 +47,13 @@ class VehicleSystem:
     # Trip Cost (Concrete Method)
     def calculate_trip_cost(self, distance):
         return distance * 10
+    
+    #  UC-11: Clean print and override __str__ method
+    def __str__(self):
+        return (
+            f"Model: {self.model}, "
+            f"ID: {self.vehicle_id}, "
+            f"Type: {self.vehicle_type}, "
+            f"Battery: {self.battery_percentage}%, "
+            f"Status: {self.vehicle_status}"
+        )

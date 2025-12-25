@@ -58,6 +58,8 @@ def main():
 
     #  UC-10: Fleet Analytics
     fm.fleet_analytics()
+    # UC-11: Alphabetical Sorting
+    fm.sort_vehicles_by_model("Hyderabad")
 
 
 if __name__ == "__main__":

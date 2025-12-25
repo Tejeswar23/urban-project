@@ -84,3 +84,24 @@ class FleetManager:
         for status, count in status_count.items():
             print(f"{status:<20}: {count}")
         print()
+    
+    # UC-11: Sort vehicles in a hub by Model name
+    def sort_vehicles_by_model(self, hub_name):
+        if hub_name not in self.hubs:
+            print("Hub not found.")
+            return
+
+        vehicles = self.hubs[hub_name]
+
+        if not vehicles:
+            print("No vehicles in this hub.")
+            return
+
+        #  Sorting using key
+        sorted_vehicles = sorted(vehicles, key=lambda v: v.model)
+
+        print(f"\n Vehicles in {hub_name} hub (Sorted by Model):")
+        # uses __str__
+        for v in sorted_vehicles:
+            print(v)  
+             
