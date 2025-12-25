@@ -3,7 +3,7 @@ class Vehicle:
         self.vehicle_id = vehicle_id
         self.model = model
         self.battery_percentage = battery_percentage
-        
+       
         
 
         
