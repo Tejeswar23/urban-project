@@ -1,3 +1,4 @@
+from abc import ABC,abstractmethod
 class VehicleSystem:
     def __init__(self, vehicle_id, model, battery_percentage):
         self.vehicle_id = vehicle_id
@@ -35,3 +36,7 @@ class VehicleSystem:
             self.__rental_price = value
         else:
             raise ValueError("Rental price cannot be negative")
+    
+    @abstractmethod    
+    def calculate_trip_cost(self):
+        pass
