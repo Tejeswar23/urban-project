@@ -47,3 +47,19 @@ class FleetManager:
                 print(f"- {v.model} ({v.vehicle_id}) | Battery: {v.battery_percentage}%")
         else:
             print("No vehicles found with battery > 80%.")
+        # UC-9: Categorized View (Car / Scooter)
+    def view_by_vehicle_type(self):
+        type_map = {}   # Vehicle Type → List of Vehicles
+
+        # Collect vehicles from all hubs
+        for vehicles in self.hubs.values():
+            for v in vehicles:
+                if v.vehicle_type not in type_map:
+                    type_map[v.vehicle_type] = []
+                type_map[v.vehicle_type].append(v)
+
+        # Display vehicles type-wise
+        for v_type, vehicles in type_map.items():
+            print(f"\n{v_type}s:")
+            for v in vehicles:
+                print(f"- {v.model} ({v.vehicle_id}) | Battery: {v.battery_percentage}%")
