@@ -104,4 +104,43 @@ class FleetManager:
         # uses __str__
         for v in sorted_vehicles:
             print(v)  
-             
+    # uc - 12 get all vehicles
+    def _get_all_vehicles(self):
+        all_vehicles = []
+        for vehicles in self.hubs.values():
+            all_vehicles.extend(vehicles)
+        return all_vehicles 
+     # UC-12: Sort by Battery Level (High → Low)
+    def sort_by_battery(self):
+        vehicles = self._get_all_vehicles()
+
+        if not vehicles:
+            print("No vehicles available.")
+            return
+
+        sorted_vehicles = sorted(
+            vehicles,
+            key=lambda v: v.battery_percentage,
+            reverse=True
+        )
+
+        print("\n Vehicles Sorted by Battery Level (High → Low)")
+        for v in sorted_vehicles:
+            print(v) 
+    # UC-12: Sort by Fare Price (High → Low)
+    def sort_by_fare_price(self):
+        vehicles = self._get_all_vehicles()
+
+        if not vehicles:
+            print("No vehicles available.")
+            return
+
+        sorted_vehicles = sorted(
+            vehicles,
+            key=lambda v: v.rental_price,
+            reverse=True
+        )
+
+        print("\n Vehicles Sorted by Fare Price (High → Low)")
+        for v in sorted_vehicles:
+            print(v)       

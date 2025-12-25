@@ -3,6 +3,7 @@ from vechile_system import VehicleSystem
 
 def main():
     fm = FleetManager()
+    
 
     # Add hubs
     fm.add_hub("Hyderabad")
@@ -60,6 +61,14 @@ def main():
     fm.fleet_analytics()
     # UC-11: Alphabetical Sorting
     fm.sort_vehicles_by_model("Hyderabad")
+    
+    v1.rental_price = 3000
+    v2.rental_price = 1500
+    v3.rental_price = 2500
+    v4.rental_price = 1800
+    # UC-12: Advanced Sorting
+    fm.sort_by_battery()
+    fm.sort_by_fare_price()
 
 
 if __name__ == "__main__":
