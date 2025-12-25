@@ -38,5 +38,5 @@ class VehicleSystem:
             raise ValueError("Rental price cannot be negative")
     
     @abstractmethod    
-    def calculate_trip_cost(self):
+    def calculate_trip_cost(self,distance):
         pass
