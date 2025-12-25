@@ -1,0 +1,4 @@
+hub_name,vehicle_id,model,battery_percentage,vehicle_type,vehicle_status,rental_price
+Hyderabad,V101,Tesla Model X,90,Car,Available,3000
+Hyderabad,V102,Ather Scooter,60,Scooter,On Trip,1500
+Bangalore,V103,Nexon EV,85,Car,Under Maintenance,2500

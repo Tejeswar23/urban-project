@@ -1,4 +1,7 @@
-class FleetManager:
+import csv
+from vechile_system import VehicleSystem
+
+class FleetManager():
     def __init__(self):
         # Hub Name → List of Vehicles
         self.hubs = {}
@@ -110,7 +113,7 @@ class FleetManager:
         for vehicles in self.hubs.values():
             all_vehicles.extend(vehicles)
         return all_vehicles 
-     # UC-12: Sort by Battery Level (High → Low)
+    # UC-12: Sort by Battery Level (High → Low)
     def sort_by_battery(self):
         vehicles = self._get_all_vehicles()
 
@@ -143,4 +146,52 @@ class FleetManager:
 
         print("\n Vehicles Sorted by Fare Price (High → Low)")
         for v in sorted_vehicles:
-            print(v)       
+            print(v)
+    # UC-13: Save to CSV
+    def save_to_csv(self, filename="fleet_data.csv"):
+        with open(filename, "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([
+                "hub_name",
+                "vehicle_id",
+                "model",
+                "battery_percentage",
+                "vehicle_type",
+                "vehicle_status",
+                "rental_price"
+            ])
+
+            for hub, vehicles in self.hubs.items():
+                for v in vehicles:
+                    writer.writerow([
+                        hub,
+                        v.vehicle_id,
+                        v.model,
+                        v.battery_percentage,
+                        v.vehicle_type,
+                        v.vehicle_status,
+                        v.rental_price
+                    ])
+
+    # UC-13: Load from CSV
+    def load_from_csv(self, filename="fleet_data.csv"):
+        try:
+            with open(filename, "r") as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    hub = row["hub_name"]
+
+                    if hub not in self.hubs:
+                        self.hubs[hub] = []
+
+                    vehicle = VehicleSystem(
+                        row["vehicle_id"],
+                        row["model"],
+                        int(row["battery_percentage"]),
+                        row["vehicle_type"],
+                        row["vehicle_status"]
+                    )
+                    vehicle.rental_price = float(row["rental_price"])
+                    self.hubs[hub].append(vehicle)
+        except FileNotFoundError:
+            pass       

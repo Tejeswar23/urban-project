@@ -1,75 +1,30 @@
 from fleet_manager import FleetManager
 from vechile_system import VehicleSystem
-
 def main():
     fm = FleetManager()
-    
 
-    # Add hubs
-    fm.add_hub("Hyderabad")
-    fm.add_hub("Bangalore")
+    # Load existing data
+    fm.load_from_csv()
 
-    # Create vehicles with status
-    v1 = VehicleSystem(
-        vehicle_id="V101",
-        model="Tesla Model X",
-        battery_percentage=90,
-        vehicle_type="Car",
-        status="Available"
-    )
+    if not fm.hubs:
+        fm.add_hub("Hyderabad")
+        fm.add_hub("Bangalore")
 
-    v2 = VehicleSystem(
-        vehicle_id="V102",
-        model="Ather Scooter",
-        battery_percentage=60,
-        vehicle_type="Scooter",
-        status="On Trip"
-    )
+        v1 = VehicleSystem("V101", "Tesla Model X", 90, "Car", "Available")
+        v1.rental_price = 3000
 
-    v3 = VehicleSystem(
-        vehicle_id="V103",
-        model="Nexon EV",
-        battery_percentage=85,
-        vehicle_type="Car",
-        status="Under Maintenance"
-    )
+        v2 = VehicleSystem("V102", "Ather Scooter", 60, "Scooter", "On Trip")
+        v2.rental_price = 1500
 
-    v4 = VehicleSystem(
-        vehicle_id="V104",
-        model="Ola Scooter",
-        battery_percentage=75,
-        vehicle_type="Scooter",
-        status="Available"
-    )
+        v3 = VehicleSystem("V103", "Nexon EV", 85, "Car", "Under Maintenance")
+        v3.rental_price = 2500
 
-    # Add vehicles to hubs
-    fm.add_vehicle_to_hub("Hyderabad", v1)
-    fm.add_vehicle_to_hub("Hyderabad", v2)
-    fm.add_vehicle_to_hub("Bangalore", v3)
-    fm.add_vehicle_to_hub("Bangalore", v4)
+        fm.add_vehicle_to_hub("Hyderabad", v1)
+        fm.add_vehicle_to_hub("Hyderabad", v2)
+        fm.add_vehicle_to_hub("Bangalore", v3)
 
-    # UC-8: Search by Hub
-    fm.search_by_hub("Hyderabad")
-
-    # UC-8: Search by Battery
-    fm.search_by_battery()
-
-    # UC-9: Categorized View
-    fm.view_by_vehicle_type()
-
-    #  UC-10: Fleet Analytics
-    fm.fleet_analytics()
-    # UC-11: Alphabetical Sorting
-    fm.sort_vehicles_by_model("Hyderabad")
-    
-    v1.rental_price = 3000
-    v2.rental_price = 1500
-    v3.rental_price = 2500
-    v4.rental_price = 1800
-    # UC-12: Advanced Sorting
-    fm.sort_by_battery()
-    fm.sort_by_fare_price()
-
+    # Save before exit
+    fm.save_to_csv()
 
 if __name__ == "__main__":
     main()
