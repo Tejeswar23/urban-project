@@ -36,6 +36,11 @@ class VehicleSystem:
             self.__rental_price = value
         else:
             raise ValueError("Rental price cannot be negative")
+    #over ride the __eq__ method
+    def __eq__(self, other):
+        if isinstance(other, VehicleSystem):
+            return self.vehicle_id == other.vehicle_id
+        return False
     
     @abstractmethod    
     def calculate_trip_cost(self,distance):
