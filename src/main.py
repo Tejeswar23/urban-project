@@ -1,56 +1,21 @@
+from vechile_system import VehicleSystem
 from fleet_manager import FleetManager
-from electric import ElectricCar, ElectricScooter
 
-def main():
-    fleet = FleetManager()
+fm = FleetManager()
 
-    while True:
-        print("\nFleet Management System")
-        print("1. Add Hub")
-        print("2. Add Vehicle to Hub")
-        print("3. View All Hubs")
-        print("4. Exit")
+fm.add_hub("Hyderabad")
+fm.add_hub("Bangalore")
 
-        choice = input("Enter choice: ")
+v1 = VehicleSystem("V101", "Tesla Model X", 90)
+v2 = VehicleSystem("V102", "Ather Scooter", 60)
+v3 = VehicleSystem("V103", "Nexon EV", 85)
 
-        if choice == "1":
-            hub_name = input("Enter Hub Name: ")
-            fleet.add_hub(hub_name)
+fm.add_vehicle_to_hub("Hyderabad", v1)
+fm.add_vehicle_to_hub("Hyderabad", v2)
+fm.add_vehicle_to_hub("Bangalore", v3)
 
-        elif choice == "2":
-            hub_name = input("Enter Hub Name: ")
+#  Search by Hub
+fm.search_by_hub("Hyderabad")
 
-            print("\nVehicle Type:")
-            print("1. Electric Car")
-            print("2. Electric Scooter")
-            v_type = input("Choose type: ")
-
-            vehicle_id = input("Enter Vehicle ID: ")
-            model = input("Enter Model Name: ")
-            battery = int(input("Enter Battery Percentage: "))
-
-            if v_type == "1":
-                seats = int(input("Enter Seating Capacity: "))
-                vehicle = ElectricCar(vehicle_id, model, battery, seats)
-
-            elif v_type == "2":
-                vehicle = ElectricScooter(vehicle_id, model, battery)
-
-            else:
-                print("Invalid vehicle type.")
-                continue
-
-            fleet.add_vehicle_to_hub(hub_name, vehicle)
-
-        elif choice == "3":
-            fleet.display_hubs()
-
-        elif choice == "4":
-            print("Exiting Fleet Management System...")
-            break
-
-        else:
-            print("Invalid choice. Try again.")
-
-if __name__ == "__main__":
-    main()
+#  Search by Battery Status
+fm.search_by_battery()

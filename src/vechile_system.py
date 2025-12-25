@@ -1,4 +1,3 @@
-from abc import ABC,abstractmethod
 class VehicleSystem:
     def __init__(self, vehicle_id, model, battery_percentage):
         self.vehicle_id = vehicle_id
@@ -36,12 +35,11 @@ class VehicleSystem:
             self.__rental_price = value
         else:
             raise ValueError("Rental price cannot be negative")
-    #over ride the __eq__ method
+
+    # Data Integrity (Duplicate Check)
     def __eq__(self, other):
-        if isinstance(other, VehicleSystem):
-            return self.vehicle_id == other.vehicle_id
-        return False
-    
-    @abstractmethod    
-    def calculate_trip_cost(self,distance):
-        pass
+        return isinstance(other, VehicleSystem) and self.vehicle_id == other.vehicle_id
+
+    # Trip Cost (Concrete Method)
+    def calculate_trip_cost(self, distance):
+        return distance * 10
