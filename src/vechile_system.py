@@ -1,9 +1,11 @@
 class VehicleSystem:
-    def __init__(self, vehicle_id, model, battery_percentage,vehicle_type):
+    def __init__(self, vehicle_id, model, battery_percentage,vehicle_type,status="Available"):
         self.vehicle_id = vehicle_id
         self.model = model
-        # added vechile type
+        # added vechile type uc-9
         self.vehicle_type = vehicle_type 
+        # added vechile status uc-10
+        self.vehicle_status = status
         self.__battery_percentage = battery_percentage
         self.__maintenance_status = "good"
         self.__rental_price = 0

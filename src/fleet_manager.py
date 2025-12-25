@@ -63,3 +63,24 @@ class FleetManager:
             print(f"\n{v_type}s:")
             for v in vehicles:
                 print(f"- {v.model} ({v.vehicle_id}) | Battery: {v.battery_percentage}%")
+    
+    # UC-10: Fleet Analytics
+    def fleet_analytics(self):
+        status_count = {
+            "Available": 0,
+            "On Trip": 0,
+            "Under Maintenance": 0
+        }
+
+        # Count vehicle statuses
+        for vehicles in self.hubs.values():
+            for v in vehicles:
+                if v.vehicle_status in status_count:
+                    status_count[v.vehicle_status] += 1
+
+        # Display formatted summary
+        print("\n Fleet Analytics Summary")
+        print()
+        for status, count in status_count.items():
+            print(f"{status:<20}: {count}")
+        print()
