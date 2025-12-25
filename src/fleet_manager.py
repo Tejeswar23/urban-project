@@ -1,4 +1,5 @@
 import csv
+import json
 from vechile_system import VehicleSystem
 
 class FleetManager():
@@ -195,3 +196,56 @@ class FleetManager():
                     self.hubs[hub].append(vehicle)
         except FileNotFoundError:
             pass       
+    # UC-14: Save fleet data to JSON
+    def save_to_json(self, filename="fleet_data.json"):
+        data = {}
+
+        for hub, vehicles in self.hubs.items():
+            data[hub] = []
+            for v in vehicles:
+                data[hub].append({
+                    "vehicle_id": v.vehicle_id,
+                    "model": v.model,
+                    "battery_percentage": v.battery_percentage,
+                    "vehicle_type": v.vehicle_type,
+                    "vehicle_status": v.vehicle_status,
+                    "rental_price": v.rental_price
+                })
+
+        with open(filename, "w") as file:
+            json.dump(data, file, indent=4)
+
+        print(f"\n Fleet data saved to {filename}")
+    # UC-14: Load fleet data from JSON (SAFE)
+    def load_from_json(self, filename="fleet_data.json"):
+        try:
+            with open(filename, "r") as file:
+                content = file.read().strip()
+
+                #  Handle empty file
+                if not content:
+                    print("\n⚠ JSON file is empty. Starting fresh.")
+                    return
+
+                data = json.loads(content)
+
+            for hub, vehicles in data.items():
+                self.hubs[hub] = []
+
+                for v in vehicles:
+                    vehicle = VehicleSystem(
+                        v["vehicle_id"],
+                        v["model"],
+                        v["battery_percentage"],
+                        v["vehicle_type"],
+                        v["vehicle_status"]
+                    )
+                    vehicle.rental_price = v["rental_price"]
+                    self.hubs[hub].append(vehicle)
+
+            print(f"\n Fleet data loaded from {filename}")
+
+        except FileNotFoundError:
+            print("\n No JSON file found. Starting fresh.")
+        except json.JSONDecodeError:
+            print("\n Invalid JSON format. Starting fresh.")

@@ -1,10 +1,11 @@
 from fleet_manager import FleetManager
 from vechile_system import VehicleSystem
+
 def main():
     fm = FleetManager()
 
-    # Load existing data
-    fm.load_from_csv()
+    # UC-14: Load from JSON
+    fm.load_from_json()
 
     if not fm.hubs:
         fm.add_hub("Hyderabad")
@@ -20,11 +21,11 @@ def main():
         v3.rental_price = 2500
 
         fm.add_vehicle_to_hub("Hyderabad", v1)
-        fm.add_vehicle_to_hub("Hyderabad", v2)
+        fm.add_vehicle_to_hub("Bangalore", v2)
         fm.add_vehicle_to_hub("Bangalore", v3)
 
     # Save before exit
-    fm.save_to_csv()
+    fm.save_to_json()
 
 if __name__ == "__main__":
     main()
