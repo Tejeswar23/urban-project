@@ -224,7 +224,7 @@ class FleetManager():
 
                 #  Handle empty file
                 if not content:
-                    print("\n⚠ JSON file is empty. Starting fresh.")
+                    print("\n JSON file is empty. Starting fresh.")
                     return
 
                 data = json.loads(content)
