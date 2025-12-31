@@ -1,4 +1,5 @@
 import pytest
+import csv,json
 from fleet_manager import FleetManager
 from electric import ElectricScooter,ElectricCar
 
@@ -182,6 +183,173 @@ def test_sort_by_fare_price_no_vehicles(fleet, capsys):
     captured = capsys.readouterr()
 
     assert "No vehicles available." in captured.out
+    
+
+
+def test_save_to_csv(fleet, capsys, tmp_path):
+    # Arrange
+    fleet.add_hub("Hyderabad")
+
+    car = ElectricCar("EC001", "Tesla", 90, 5)
+    car.vehicle_type = "car"
+    car.vehicle_status = "Available"
+    car.rental_price = 500
+
+    fleet.add_vehicle_to_hub("Hyderabad", car)
+
+    file_path = tmp_path / "fleet.csv"
+
+    # Act
+    fleet.save_to_csv(file_path)
+
+    # Assert file exists
+    assert file_path.exists()
+
+    # Read CSV content
+    with open(file_path, newline="") as f:
+        reader = list(csv.reader(f))
+
+    # Header check
+    assert reader[0] == [
+        "hub_name",
+        "vehicle_id",
+        "model",
+        "battery_percentage",
+        "vehicle_type",
+        "vehicle_status",
+        "rental_price"
+    ]
+
+    # Data row check
+    assert reader[1] == [
+        "Hyderabad",
+        "EC001",
+        "Tesla",
+        "90",
+        "car",
+        "Available",
+        "500"
+    ]
+
+def test_load_from_csv_success(fleet, tmp_path):
+    file_path = tmp_path / "fleet.csv"
+
+    # Create CSV file
+    with open(file_path, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "hub_name",
+            "vehicle_id",
+            "model",
+            "battery_percentage",
+            "vehicle_type",
+            "vehicle_status",
+            "rental_price"
+        ])
+        writer.writerow([
+            "Hyderabad", "EC001", "Tesla", "90", "car", "Available", "500"
+        ])
+
+    # Act
+    fleet.load_from_csv(file_path)
+
+    # Assert
+    assert "Hyderabad" in fleet.hubs
+    assert len(fleet.hubs["Hyderabad"]) == 1
+
+    vehicle = fleet.hubs["Hyderabad"][0]
+    assert vehicle.vehicle_id == "EC001"
+    assert vehicle.model == "Tesla"
+    assert vehicle.battery_percentage == 90
+    assert vehicle.vehicle_type == "car"
+    assert vehicle.vehicle_status == "Available"
+    assert vehicle.rental_price == 500.0
+    
+
+def test_save_to_json(fleet, capsys, tmp_path):
+    # Arrange
+    fleet.add_hub("Hyderabad")
+
+    car = ElectricCar("EC001", "Tesla", 90, 5)
+    car.vehicle_type = "car"
+    car.vehicle_status = "Available"
+    car.rental_price = 500
+
+    fleet.add_vehicle_to_hub("Hyderabad", car)
+
+    file_path = tmp_path / "fleet.json"
+
+    # Act
+    fleet.save_to_json(file_path)
+
+    # Assert file exists
+    assert file_path.exists()
+
+    # Read JSON content
+    with open(file_path) as f:
+        data = json.load(f)
+
+    assert "Hyderabad" in data
+    assert len(data["Hyderabad"]) == 1
+
+    vehicle = data["Hyderabad"][0]
+    assert vehicle["vehicle_id"] == "EC001"
+    assert vehicle["model"] == "Tesla"
+    assert vehicle["battery_percentage"] == 90
+    assert vehicle["vehicle_type"] == "car"
+    assert vehicle["vehicle_status"] == "Available"
+    assert vehicle["rental_price"] == 500
+
+    # Optional: check print message
+    captured = capsys.readouterr()
+    assert "Fleet data saved to" in captured.out
+
+
+def test_load_from_json_success(fleet, tmp_path, capsys):
+    file_path = tmp_path / "fleet.json"
+
+    data = {
+        "Hyderabad": [
+            {
+                "vehicle_id": "EC001",
+                "model": "Tesla",
+                "battery_percentage": 90,
+                "vehicle_type": "car",
+                "vehicle_status": "Available",
+                "rental_price": 500
+            }
+        ]
+    }
+
+    file_path.write_text(json.dumps(data))
+
+    fleet.load_from_json(file_path)
+    captured = capsys.readouterr()
+
+    assert "Fleet data loaded from" in captured.out
+    assert "Hyderabad" in fleet.hubs
+    assert len(fleet.hubs["Hyderabad"]) == 1
+    assert fleet.hubs["Hyderabad"][0].model == "Tesla"
+    
+def test_load_from_json_empty_file(fleet, tmp_path, capsys):
+    file_path = tmp_path / "fleet.json"
+    file_path.write_text("")
+
+    fleet.load_from_json(file_path)
+    captured = capsys.readouterr()
+
+    assert "JSON file is empty" in captured.out
+    assert fleet.hubs == {}
+
+def test_load_from_json_file_not_found(fleet, capsys):
+    fleet.load_from_json("missing.json")
+    captured = capsys.readouterr()
+
+    assert "No JSON file found" in captured.out
+
+
+
+
 
 
 
